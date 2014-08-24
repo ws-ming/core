@@ -1,6 +1,6 @@
 <?php namespace Webshaper\Core\Exception;
 
-class WSException extends \Exception{
+class WSException extends BaseException{
 
 
     public function __construct($errorCode){
