@@ -3,6 +3,5 @@
 abstract class BaseModel extends \Eloquent{
 
     protected $connection = 'webshaper-tenant';
-
-    protected function set
+    protected $timestamps = false;
 }
