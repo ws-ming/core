@@ -26,7 +26,7 @@ abstract class BaseRepository {
     public function getOrFail($id){
         $model = $this->model->find($id);
 
-        if(is_null($model)) throw WSDataNotFound();
+        if(is_null($model)) throw new WSDataNotFound();
 
         return $model;
     }
