@@ -1,6 +1,7 @@
 <?php namespace Webshaper\Core\Repository;
 
 use Illuminate\Database\Eloquent\Model;
+use Webshaper\Core\Exception\WSDataNotFound;
 
 abstract class BaseRepository {
 
@@ -22,4 +23,9 @@ abstract class BaseRepository {
         return $this->model->find($id);
     }
 
+    public function getOrFail($id){
+        $model = $this->model->find($id);
+
+        if(is_null($model)) throw WSDataNotFound();
+    }
 } 
