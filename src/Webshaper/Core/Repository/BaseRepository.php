@@ -27,5 +27,7 @@ abstract class BaseRepository {
         $model = $this->model->find($id);
 
         if(is_null($model)) throw WSDataNotFound();
+
+        return $model;
     }
 } 
