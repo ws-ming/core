@@ -39,7 +39,7 @@ class ApiUserManager extends ApiBaseManager{
         return true;
     }
 
-    public function register($storeUrl, $username, $password, $appName, $duplicate = false){
+    public function register($storeUrl, $username, $appName, $duplicate = false){
         $wsHelper = new WSHelper();
         $dbHelper = new DBHelper();
         //check the store is exists in crm
@@ -52,7 +52,10 @@ class ApiUserManager extends ApiBaseManager{
 
         //check the user exists in the store
         $userRepo = new UserRepository(new User());
-        if(!$userRepo->authenticate($username, $password)) throw new WSException(ErrorCode::AUTHENTICATE_FAILED);
+        $userRepo->getOrFail($username);
+
+//        if(!$userRepo->authenticate($username, $password)) throw new WSException(ErrorCode::AUTHENTICATE_FAILED);
+
         //generate the uuid and store to app table
         $uuid = substr(md5($appName),0,10);
         $uuid = uniqid($uuid);
