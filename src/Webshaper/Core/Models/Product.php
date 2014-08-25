@@ -10,7 +10,4 @@ class Product extends BaseModel {
         return $this->belongsTo('Webshaper\Core\Models\ProductItem','intPKProductItem');
     }
 
-    public function getProductBySKU($sku){
-        return $this->where('txtSKU','like',$sku)->get();
-    }
 }

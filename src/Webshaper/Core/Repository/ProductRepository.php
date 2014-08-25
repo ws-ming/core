@@ -1,5 +1,6 @@
 <?php namespace Webshaper\Core\Repository;
 
+use Webshaper\Core\Exception\WSDataNotFound;
 use Webshaper\Core\ProductInterface;
 use Webshaper\Core\Models\Product as Product;
 class ProductRepository extends BaseRepository implements ProductInterface{
@@ -15,7 +16,10 @@ class ProductRepository extends BaseRepository implements ProductInterface{
      */
     public function getProductItem($intPkProduct)
     {
-        return $this->model->find($intPkProduct)->productItem;
+        $result = $this->model->find($intPkProduct);
+
+        if(is_null($result)) throw new WSDataNotFound();
+        return $result->productItem;
     }
 
     /**
@@ -23,7 +27,14 @@ class ProductRepository extends BaseRepository implements ProductInterface{
      * @param $sku
      */
     public function getBySKU($sku){
-//        dd(\Config::get('database.connections.test'));
-        return $this->model->where('txtSku','like','%'.$sku.'%')->get();
+        return $this->search($sku,'txtSKU');
+    }
+
+    public function getByName($prodItemName){
+        return $this->search($prodItemName,'txtProdName');
+    }
+
+    public function searchProduct($keywords){
+        return $this->search($keywords,array('txtProdName','txtSKU'));
     }
 }

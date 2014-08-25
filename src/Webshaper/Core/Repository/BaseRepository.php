@@ -30,4 +30,24 @@ abstract class BaseRepository {
 
         return $model;
     }
+
+    public function search($find, $column){
+        $find = trim($find);
+        $results = null;
+
+        if(is_array($column)){
+
+            foreach($column as $col){
+                $this->model = $this->model->orWhere($col,'LIKE',"%{$find}%");
+            }
+
+            $results = $this->model->get();
+
+        }else{
+            $results =  $this->model->where($column,'LIKE',"%{$find}%")->get();
+        }
+
+        return $results->count() == 0 ? null : $results;
+
+    }
 } 
