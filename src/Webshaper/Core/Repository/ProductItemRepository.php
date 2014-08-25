@@ -13,10 +13,10 @@ class ProductItemRepository extends BaseRepository implements ProductItemInterfa
 
     public function getProducts($intPKProductItem)
     {
-        $result = $this->model->find($intPKProductItem);
+        $result = $this->model->with('products')->find($intPKProductItem);
         if(is_null($result)) throw new WSDataNotFound();
 
-        return $result->products;
+        return $result;
     }
 
     public function getByName($prodItemName){

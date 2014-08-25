@@ -47,7 +47,9 @@ abstract class BaseRepository {
             $results =  $this->model->where($column,'LIKE',"%{$find}%")->get();
         }
 
+
         return $results->count() == 0 ? null : $results;
 
     }
-} 
+
+}

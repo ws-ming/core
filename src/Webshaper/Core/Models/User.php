@@ -2,7 +2,10 @@
 
 
 class User extends BaseModel{
+
     protected $table = "user";
     protected $primaryKey = "txtLoginID";
     protected $fillable=[];
+
+
 }
