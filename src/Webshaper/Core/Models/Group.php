@@ -7,4 +7,6 @@ class Group extends BaseModel{
 
     protected $table = "group";
     protected $fillable=[];
+
+
 }

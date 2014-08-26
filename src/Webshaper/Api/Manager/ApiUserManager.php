@@ -63,13 +63,18 @@ class ApiUserManager extends ApiBaseManager{
         //regenerate the uuid if exists and duplicate not allow
         $userApp = $this->model->where('app_name',$appName)->where('store_url',$storeUrl)->where('owned_by',$username)->get();
 
-        if(!$duplicate){
+        if(!$duplicate && $userApp->count() > 1){
             $userApp->each(function($user){
                $user->delete();
             });
+        }else if(!duplicate){ //not duplicated, and login before, just regenerate the token
+
+            $app = $userApp[0];
+
+        }else{
+            $app = new ApiApp();
         }
 
-        $app = new ApiApp();
         $app->app_name = $appName;
         $app->app_token = $uuid;
         $app->store_url = $storeUrl;
