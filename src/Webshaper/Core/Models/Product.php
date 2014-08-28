@@ -10,4 +10,15 @@ class Product extends BaseModel {
         return $this->belongsTo('Webshaper\Core\Models\ProductItem','intPKProductItem');
     }
 
+    public function productItemBasic(){
+        $columns = array(
+            'intPKProductItem',
+            'txtProdItemName',
+            'txtProdItemShortDesc',
+            'txtPicSmallURL',
+            'intPKCategory'
+        );
+        return $this->productItem()->select($columns);
+    }
+
 }

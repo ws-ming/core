@@ -8,4 +8,17 @@ class ProductItem extends BaseModel {
     public function products(){
         return $this->hasMany('Webshaper\Core\Models\Product','intPKProductItem');
     }
+
+    public function productsBasic(){
+        $columns = array(
+            'intPKProduct',
+            'intStockQty',
+            'txtSKU',
+            'txtStockStatus',
+            'txtProdName',
+            'fPrice'
+        );
+        return $this->products()->select($columns);
+    }
+
 }

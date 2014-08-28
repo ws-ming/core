@@ -60,6 +60,7 @@ class ApiUserManager extends ApiBaseManager{
         $uuid = substr(md5($appName),0,10);
         $uuid = uniqid($uuid);
 
+        $privateKey = substr(md5(time()),0,10);
         //regenerate the uuid if exists and duplicate not allow
         $userApp = $this->model->where('app_name',$appName)->where('store_url',$storeUrl)->where('owned_by',$username)->get();
 
@@ -77,6 +78,7 @@ class ApiUserManager extends ApiBaseManager{
 
         $app->app_name = $appName;
         $app->app_token = $uuid;
+        $app->private_key = $privateKey;
         $app->store_url = $storeUrl;
         $app->owned_by = $username;
         $app->save();
