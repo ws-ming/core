@@ -21,6 +21,10 @@ class Product extends BaseModel {
         return $this->productItem()->select($columns);
     }
 
+    public function productItemBasicWithGallery(){
+        return $this->productItemBasic()->with('galleries');
+    }
+
     public function galleries(){
         return $this->hasMany('Webshaper\Core\Models\ProductGallery','productId');
     }
