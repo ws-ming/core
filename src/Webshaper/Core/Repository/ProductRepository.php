@@ -3,7 +3,7 @@
 use Webshaper\Core\Exception\WSDataNotFound;
 use Webshaper\Core\ProductInterface;
 use Webshaper\Core\Models\Product as Product;
-class ProductRepository extends BaseRepository implements ProductInterface{
+class ProductRepository extends BaseRepository{
 
     function __construct(Product $model){
 

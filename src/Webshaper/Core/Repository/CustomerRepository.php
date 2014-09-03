@@ -15,6 +15,16 @@ class CustomerRepository extends BaseRepository{
         return $customer[0];
     }
 
+    public function searchCustomer($keywords)
+    {
+        $columns = array(
+            'txtFirstName',
+            'txtLastName',
+            'txtCustomerEmail',
+        );
+
+        return $this->search($keywords,$columns);
+    }
 
 
 }

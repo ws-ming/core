@@ -29,6 +29,7 @@ class ApiUserManager extends ApiBaseManager{
     public function authenticateAPIToken($token,$storeUrl,$appName){
         //check the details
         $dbHelper = new DBHelper();
+
         $user = $this->model->where('app_token',$token)->where('store_url',$storeUrl)->where('app_name',$appName)->first();
 
         if(!$user){
@@ -38,6 +39,7 @@ class ApiUserManager extends ApiBaseManager{
         $dbHelper->setupStoreDB($storeUrl);
         return true;
     }
+
 
     public function register($storeUrl, $username, $appName, $duplicate = false){
         $wsHelper = new WSHelper();

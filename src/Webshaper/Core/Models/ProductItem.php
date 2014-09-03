@@ -18,6 +18,7 @@ class ProductItem extends BaseModel {
             'txtProdName',
             'fPrice'
         );
+
         return $this->products()->select($columns);
     }
 

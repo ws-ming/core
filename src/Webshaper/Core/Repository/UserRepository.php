@@ -2,7 +2,7 @@
 
 use Webshaper\Core\Models\User as User;
 use \Webshaper\Core\UserInterface as UserInterface;
-class UserRepository extends BaseRepository implements UserInterface
+class UserRepository extends BaseRepository
 {
 
     function __construct(User $model){
