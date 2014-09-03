@@ -21,4 +21,12 @@ class Product extends BaseModel {
         return $this->productItem()->select($columns);
     }
 
+    public function galleries(){
+        return $this->hasMany('Webshaper\Core\Models\ProductGallery','productId');
+    }
+
+    public function productItemGallery(){
+        return $this->hasMany('Webshaper\Core\Models\ProductGallery','pkProductItem','intPKProductItem')->orderBy('defaultPic','desc');
+    }
+
 }

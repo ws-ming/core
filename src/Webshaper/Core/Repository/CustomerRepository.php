@@ -26,5 +26,14 @@ class CustomerRepository extends BaseRepository{
         return $this->search($keywords,$columns);
     }
 
+    /**
+     * @param $customerId customer order
+     * @param $totalAmount total amount purchased in the order
+     * @param $customerEmail if need to search customer by email
+     */
+    public function assignPointsByTotalAmountPurchased($customerId, $totalAmount, $customerEmail = ''){
+
+        //if customer id is null/not given, search by customer email
+    }
 
 }

@@ -37,4 +37,9 @@ class ProductRepository extends BaseRepository{
     public function searchProduct($keywords){
         return $this->search($keywords,array('txtProdName','txtSKU'));
     }
+
+    public function getGallery($intPKProduct){
+        $products = $this->model->with(array('galleries','productItemGallery'))->find($intPKProduct);
+        return $products;
+    }
 }
