@@ -1,6 +1,7 @@
 <?php namespace Webshaper\Core;
 
 use Illuminate\Support\ServiceProvider;
+use Webshaper\Core\Repository\CategoryRepository;
 use Webshaper\Core\Repository\OrderItemRepository;
 use Webshaper\Core\Repository\OrderRepository;
 use Webshaper\Core\Repository\UserRepository;
@@ -34,6 +35,7 @@ class CoreServiceProvider extends ServiceProvider {
         $this->registerCustomerRepository();
         $this->registerOrderItemRepository();
         $this->registerOrderRepository();
+        $this->registerCategoryRepository();
         $this->registerWSHelper();
         $this->registerDBHelper();
     }
@@ -119,6 +121,14 @@ class CoreServiceProvider extends ServiceProvider {
         });
 
         $this->registerAlias('OrderItemRepo');
+    }
+
+    public function registerCategoryRepository(){
+        $this->app['webshaper-categoryRepo'] = $this->app->share(function($app){
+            return new CategoryRepository($this->_getModel($app,'Category'));
+        });
+
+        $this->registerAlias('CategoryRepo');
     }
 
 
