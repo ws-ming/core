@@ -45,6 +45,7 @@ class ApiUserManager extends ApiBaseManager{
         $wsHelper = new WSHelper();
         $dbHelper = new DBHelper();
         //check the store is exists in crm
+
         if(!$wsHelper->isStoreExists($storeUrl)){
             throw new WSException(ErrorCode::STORE_NOT_FOUND);
         }
@@ -70,7 +71,7 @@ class ApiUserManager extends ApiBaseManager{
             $userApp->each(function($user){
                $user->delete();
             });
-        }else if(!$duplicate){ //not duplicated, and login before, just regenerate the token
+        }else if(!$duplicate && $userApp->count() == 0){ //not duplicated, and login before, just regenerate the token
 
             $app = $userApp[0];
 
