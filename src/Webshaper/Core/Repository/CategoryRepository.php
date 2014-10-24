@@ -18,8 +18,8 @@ class CategoryRepository extends BaseRepository{
 
     public function getLastModified()
     {
-        $category = Category::limit(1)->orderBy('dtModified','desc')->get();
+        $category = Category::limit(1)->orderBy('dtModified','desc')->first();
 
-        return $category[0];
+        return $category;
     }
 } 
