@@ -45,7 +45,7 @@ class ProductRepository extends BaseRepository{
 
     public function getLastModified()
     {
-        $product = $this->model->limit(1)->orderBy('dtUpdated','desc')->first();
+        $product = $this->model->limit(1)->orderBy('dtUpdated','desc')->with(array('productItemBasicWithGallery'))->first();
 
         return $product;
     }
