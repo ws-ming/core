@@ -71,7 +71,7 @@ class ApiUserManager extends ApiBaseManager{
             $userApp->each(function($user){
                $user->delete();
             });
-        }else if(!$duplicate && $userApp->count() == 0){ //not duplicated, and login before, just regenerate the token
+        }else if(!$duplicate && $userApp->count() != 0){ //not duplicated, and login before, just regenerate the token
 
             $app = $userApp[0];
 

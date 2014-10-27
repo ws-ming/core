@@ -42,4 +42,12 @@ class ProductRepository extends BaseRepository{
         $products = $this->model->with(array('galleries','productItemGallery'))->find($intPKProduct);
         return $products;
     }
+
+    public function getLastModified()
+    {
+        $product = $this->model->limit(1)->orderBy('dtUpdated','desc')->first();
+
+        return $product;
+    }
+
 }

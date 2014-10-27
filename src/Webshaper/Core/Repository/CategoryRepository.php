@@ -11,14 +11,14 @@ class CategoryRepository extends BaseRepository{
     public function getAllMain()
     {
         $distinctCatId = ProductItem::distinct('intPKCategory')->get(array('intPKCategory'))->toArray();
-        $categories = Category::where('intActive',1)->whereIn('intPKCategory',$distinctCatId)->get();
+        $categories = $this->model->where('intActive',1)->whereIn('intPKCategory',$distinctCatId)->get();
 
         return $categories;
     }
 
     public function getLastModified()
     {
-        $category = Category::limit(1)->orderBy('dtModified','desc')->first();
+        $category = $this->model->limit(1)->orderBy('dtModified','desc')->first();
 
         return $category;
     }
