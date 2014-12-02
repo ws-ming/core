@@ -24,16 +24,17 @@ class OrderRepository extends BaseRepository{
         return $result;
     }
 
-    public function createNewOrder($total, $itemQty, $currency, $orderStatus, $paymentMethod,array $items, $customerId, $orderType, $useCustAddr =  true, $shipAddrSameWithCust = true, $billAddrSameWithCust = true){
+    public function createNewOrder($total, $currency, $orderStatus, $paymentMethod,array $items, $customerId, $orderType, $useCustAddr =  true, $shipAddrSameWithCust = true, $billAddrSameWithCust = true){
         //order type 1=store 2=pos
 
         //create a new order
         $order = new Order();
         $order->fTotal = $total;
-        $order->intQty = $itemQty;
+        $order->intQty = count($items);
         $order->txtOrderCurr = $currency;
         $order->txtOrderStatus = $orderStatus;
         $order->txtPaymentMethod = $paymentMethod;
+        $order->intOrderType = $orderType;
         $order->dtCreated = Carbon::now();
 
         $order->save();
@@ -48,9 +49,9 @@ class OrderRepository extends BaseRepository{
         return $order;
     }
 
-    public function createNewOrderForGuest($total, $itemQty, $currency, $orderStatus, $paymentMethod, array $items,$customerId, $orderType){
+    public function createNewOrderForGuest($total, $currency, $orderStatus, $paymentMethod, array $items,$customerId, $orderType){
 
-       return $this->createNewOrder($total,$itemQty,$currency,$orderStatus,$paymentMethod,$items,$customerId, $orderType);
+       return $this->createNewOrder($total,$currency,$orderStatus,$paymentMethod,$items,$customerId, $orderType);
 
     }
 
