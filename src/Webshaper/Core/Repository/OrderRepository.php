@@ -24,7 +24,7 @@ class OrderRepository extends BaseRepository{
         return $result;
     }
 
-    public function createNewOrder($total, $currency, $orderStatus, $paymentMethod,array $items, $customerId, $orderType, $useCustAddr =  true, $shipAddrSameWithCust = true, $billAddrSameWithCust = true){
+    public function createNewOrder($total, $currency, $orderStatus, $paymentMethod,array $items, $customerId, $orderType,$calculatedDiscount = 0,$discountType = null,$useCustAddr =  true, $shipAddrSameWithCust = true, $billAddrSameWithCust = true){
         //order type 1=store 2=pos
 
         //create a new order
@@ -37,6 +37,22 @@ class OrderRepository extends BaseRepository{
         $order->intOrderType = $orderType;
         $order->dtCreated = Carbon::now();
 
+        if(!is_null($discountType)){
+
+            $order->fDiscountCalculated = $calculatedDiscount;
+
+        }
+
+        if($discountType == "FLAT")
+        {
+            $order->fDiscountValue = $calculatedDiscount;
+
+        }else if($discountType == "PERCENTAGE")
+        {
+            $order->fDiscountPercentage = $calculatedDiscount;
+        }
+
+
         $order->save();
 
         //add the order items
@@ -44,14 +60,15 @@ class OrderRepository extends BaseRepository{
 
         //if customer id given and exists,calculate the points and assign to customer
         $order->txtOrderRef = "P".str_pad($order->intPKOrder,9,0,STR_PAD_LEFT);
+
         $order->save();
 
         return $order;
     }
 
-    public function createNewOrderForGuest($total, $currency, $orderStatus, $paymentMethod, array $items,$customerId, $orderType){
+    public function createNewOrderForGuest($total, $currency, $orderStatus, $paymentMethod, array $items,$customerId, $orderType,$calculatedDiscount = 0,$discountType = null){
 
-       return $this->createNewOrder($total,$currency,$orderStatus,$paymentMethod,$items,$customerId, $orderType);
+       return $this->createNewOrder($total,$currency,$orderStatus,$paymentMethod,$items,$customerId, $orderType, $calculatedDiscount,$discountType);
 
     }
 
