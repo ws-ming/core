@@ -48,9 +48,9 @@ class OrderRepository extends BaseRepository{
         return $order;
     }
 
-    public function createNewOrderForGuest($total, $itemQty, $currency, $orderStatus, $paymentMethod, array $items){
+    public function createNewOrderForGuest($total, $itemQty, $currency, $orderStatus, $paymentMethod, array $items,$customerId, $orderType){
 
-       return $this->createNewOrder($total,$itemQty,$currency,$orderStatus,$paymentMethod,$items);
+       return $this->createNewOrder($total,$itemQty,$currency,$orderStatus,$paymentMethod,$items,$customerId, $orderType);
 
     }
 
