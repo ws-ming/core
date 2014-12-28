@@ -1,7 +1,9 @@
 <?php namespace Webshaper\Core\Repository;
 
 use Carbon\Carbon;
+use Webshaper\Core\Exception\WSException;
 use Webshaper\Core\Models\Order;
+use Webshaper\Core\Support\ErrorCode;
 
 class OrderRepository extends BaseRepository{
 
@@ -26,6 +28,11 @@ class OrderRepository extends BaseRepository{
 
     public function createNewOrder($total, $currency, $orderStatus, $paymentMethod,array $items, $customerId, $orderType,$calculatedDiscount = 0,$discountType = null,$useCustAddr =  true, $shipAddrSameWithCust = true, $billAddrSameWithCust = true){
         //order type 1=store 2=pos
+        //check stock
+        if(!$this->orderItemRepo->isStockSufficient($items))
+        {
+            throw new WSException(ErrorCode::PRODUCT_QUANTITY_INSUFFICIENT);
+        }
 
         //create a new order
         $order = new Order();

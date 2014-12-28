@@ -5,4 +5,5 @@ class ErrorCode {
     const SETUP_STORE_NOT_FOUND = "Store Information not correct";
     const TRIAL_STORE_NOT_EXISTS = "Trial store not found";
     const AUTHENTICATE_FAILED = "Authentication failed";
+    const PRODUCT_QUANTITY_INSUFFICIENT = "Insufficient stock";
 }

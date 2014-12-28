@@ -1,6 +1,8 @@
 <?php namespace Webshaper\Core\Repository;
 
+use Webshaper\Core\Exception\WSException;
 use Webshaper\Core\Models\OrderItem;
+use Webshaper\Core\Support\ErrorCode;
 
 class OrderItemRepository extends BaseRepository{
 
@@ -25,5 +27,19 @@ class OrderItemRepository extends BaseRepository{
             $orderItems->save();
         }
 
+    }
+
+    public function isStockSufficient(array $orderItems)
+    {
+        foreach($orderItems as $orderItem)
+        {
+            $item =  OrderItem::find($orderItem['product_id']);
+            if($item->intQty < $orderItem['quantity'])
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
