@@ -7,4 +7,5 @@ class WSException extends BaseException{
         parent::__construct($errorCode);
     }
 
+
 } 

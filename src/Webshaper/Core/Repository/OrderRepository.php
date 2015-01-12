@@ -12,11 +12,16 @@ class OrderRepository extends BaseRepository{
      * @var OrderItemRepository
      */
     private $orderItemRepo;
+    /**
+     * @var ProductRepository
+     */
+    private $productRepo;
 
-    function __construct(Order $model, OrderItemRepository $orderItemRepo){
+    function __construct(Order $model, OrderItemRepository $orderItemRepo,ProductRepository $productRepo){
 
         parent::__construct($model);
         $this->orderItemRepo = $orderItemRepo;
+        $this->productRepo = $productRepo;
     }
 
     public function getOrderItems($intPKOrder){
@@ -26,12 +31,18 @@ class OrderRepository extends BaseRepository{
         return $result;
     }
 
-    public function createNewOrder($total, $currency, $orderStatus, $paymentMethod,array $items, $customerId, $orderType,$calculatedDiscount = 0,$discountType = null,$useCustAddr =  true, $shipAddrSameWithCust = true, $billAddrSameWithCust = true){
+    public function createNewOrder($total, $currency, $orderStatus, $paymentMethod,array $items, $customerId, $orderType,$calculatedDiscount = 0,$discountType = null,$ignoreStock = false,$useCustAddr =  true, $shipAddrSameWithCust = true, $billAddrSameWithCust = true){
         //order type 1=store 2=pos
         //check stock
-        if(!$this->orderItemRepo->isStockSufficient($items))
+        $stock = $this->productRepo->isStockSufficient($items);
+
+        if(!$ignoreStock && $stock == true )
         {
-            throw new WSException(ErrorCode::PRODUCT_QUANTITY_INSUFFICIENT);
+            $msg = array(
+                'type' =>   ErrorCode::PRODUCT_QUANTITY_INSUFFICIENT,
+                'stock' => $stock
+            );
+            throw new WSException($msg);
         }
 
         //create a new order

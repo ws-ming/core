@@ -109,7 +109,7 @@ class CoreServiceProvider extends ServiceProvider {
 
     public function registerOrderRepository(){
         $this->app['webshaper-orderRepo'] = $this->app->share(function($app){
-            return new OrderRepository($this->_getModel($app,'Order'),$this->app['webshaper-orderItemRepo']);
+            return new OrderRepository($this->_getModel($app,'Order'),$this->app['webshaper-orderItemRepo'],$this->app['webshaper-productRepo']);
         });
 
         $this->registerAlias('OrderRepo');

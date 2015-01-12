@@ -50,4 +50,28 @@ class ProductRepository extends BaseRepository{
         return $product;
     }
 
+    public function isStockSufficient(array $orderItems)
+    {
+        $stock = null;
+
+        foreach($orderItems as $orderItem)
+        {
+            $item =  $this->model->find($orderItem['product_id']);
+            if($item->intStockQty < $orderItem['quantity'])
+            {
+                $stock[] = array(
+                    'product_id' => $orderItem['product_id'],
+                    'product_name' => $item->txtProdName,
+                    'stock_quantity' => $item->intStockQty
+                );
+            }
+        }
+
+        if(count($stock) > 0)
+        {
+            return $stock;
+        }
+
+        return true;
+    }
 }
