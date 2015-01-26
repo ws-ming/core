@@ -31,12 +31,12 @@ class OrderRepository extends BaseRepository{
         return $result;
     }
 
-    public function createNewOrder($total, $currency, $orderStatus, $paymentMethod,array $items, $customerId, $orderType,$calculatedDiscount = 0,$discountType = null,$ignoreStock = false,$useCustAddr =  true, $shipAddrSameWithCust = true, $billAddrSameWithCust = true){
+    public function createNewOrder($total, $currency, $orderStatus, $paymentMethod,array $items, $customerId, $orderType,$calculatedDiscount = 0,$discountType = null,$ignoreStock = false,$jsonData = null,$useCustAddr =  true, $shipAddrSameWithCust = true, $billAddrSameWithCust = true){
         //order type 1=store 2=pos
         //check stock
         $stock = $this->productRepo->isStockSufficient($items);
 
-        if(!$ignoreStock && $stock == true )
+        if(!$ignoreStock && $stock !== true )
         {
             $msg = array(
                 'type' =>   ErrorCode::PRODUCT_QUANTITY_INSUFFICIENT,
@@ -70,6 +70,10 @@ class OrderRepository extends BaseRepository{
             $order->fDiscountPercentage = $calculatedDiscount;
         }
 
+        if(!is_null($jsonData))
+        {
+            $order->jsonData = $jsonData;
+        }
 
         $order->save();
 
@@ -84,9 +88,9 @@ class OrderRepository extends BaseRepository{
         return $order;
     }
 
-    public function createNewOrderForGuest($total, $currency, $orderStatus, $paymentMethod, array $items,$customerId, $orderType,$calculatedDiscount = 0,$discountType = null){
+    public function createNewOrderForGuest($total, $currency, $orderStatus, $paymentMethod, array $items,$customerId, $orderType,$calculatedDiscount = 0,$discountType = null,$ignoreStock = false,$jsonData = null){
 
-       return $this->createNewOrder($total,$currency,$orderStatus,$paymentMethod,$items,$customerId, $orderType, $calculatedDiscount,$discountType);
+        return $this->createNewOrder($total,$currency,$orderStatus,$paymentMethod,$items,$customerId, $orderType, $calculatedDiscount,$discountType,$ignoreStock);
 
     }
 
