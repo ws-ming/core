@@ -3,6 +3,7 @@
 use Illuminate\Support\ServiceProvider;
 use Webshaper\Core\Repository\CategoryRepository;
 use Webshaper\Core\Repository\OrderItemRepository;
+use Webshaper\Core\Repository\OrderLogRepository;
 use Webshaper\Core\Repository\OrderRepository;
 use Webshaper\Core\Repository\UserRepository;
 use Webshaper\Core\Repository\LogActivityRepository;
@@ -38,6 +39,7 @@ class CoreServiceProvider extends ServiceProvider {
         $this->registerCategoryRepository();
         $this->registerWSHelper();
         $this->registerDBHelper();
+        $this->registerOrderLogRepository();
     }
 
     /**
@@ -131,6 +133,11 @@ class CoreServiceProvider extends ServiceProvider {
         $this->registerAlias('CategoryRepo');
     }
 
+    public function registerOrderLogRepository(){
+        $this->app['webshaper-orderItemRepo'] = $this->app->share(function($app){
+            return new OrderLogRepository($this->_getModel($app,'OrderLog'));
+        });
+    }
 
     private function _getModel($app,$name){
         return $app['Webshaper\Core\Models\\'.$name];

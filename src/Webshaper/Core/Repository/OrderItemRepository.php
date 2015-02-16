@@ -1,5 +1,6 @@
 <?php namespace Webshaper\Core\Repository;
 
+use Carbon\Carbon;
 use Webshaper\Core\Models\OrderItem;
 use Webshaper\Core\Models\Product;
 
@@ -15,6 +16,7 @@ class OrderItemRepository extends BaseRepository{
         foreach($orderItems as $orderItem){
             $product = Product::find($orderItem['product_id']);
             $product->intStockQty = $product->intStockQty - $orderItem['quantity'];
+            $product->dtUpdated = Carbon::now();
             $product->save();
 
             $orderItems = new OrderItem();
@@ -32,4 +34,17 @@ class OrderItemRepository extends BaseRepository{
 
     }
 
+    public function returnOrderItems($orderItems)
+    {
+        foreach($orderItems as $item)
+        {
+            $product = Product::find($item->intPKProduct);
+
+            $product->intStockQty = $product->intStockQty + $item->intQty;
+
+            $product->dtUpdated = Carbon::now();
+
+            $product->save();
+        }
+    }
 }
