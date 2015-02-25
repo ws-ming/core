@@ -201,7 +201,7 @@ class DBHelper {
      * @param $dbPwd
      */
     public function setupDBConfig($dbName, $dbUser, $dbPwd, $dbhost){
-        if($this->DEBUG) $dbhost = 'localhost';
+        //if($this->DEBUG) $dbhost = 'localhost';
         \Config::set('database.connections.webshaper-tenant.host', $dbhost);
         \Config::set('database.connections.webshaper-tenant.database',$dbName);
         \Config::set('database.connections.webshaper-tenant.username',$dbUser);
