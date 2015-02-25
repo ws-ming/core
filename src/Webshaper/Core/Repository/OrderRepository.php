@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Webshaper\Core\Exception\WSException;
 use Webshaper\Core\Models\Order;
 use Webshaper\Core\Support\ErrorCode;
+use Webshaper\Core\Support\Facades\WSHelper;
 
 class OrderRepository extends BaseRepository{
 
@@ -50,7 +51,9 @@ class OrderRepository extends BaseRepository{
             throw new WSException($msg);
         }
 
-        \DB::connection('webshaper-tenant')->transaction(function() use($total, $currency, $orderStatus, $paymentMethod,$items, $customerId, $orderType,$calculatedDiscount,$discountType,$ignoreStock,$jsonData,$remarks,$useCustAddr, $shipAddrSameWithCust, $billAddrSameWithCust){
+        \DB::connection('webshaper-tenant')->beginTransaction();
+
+        try{
             //create a new order
             $order = new Order();
             $order->fTotal = $total;
@@ -96,9 +99,15 @@ class OrderRepository extends BaseRepository{
 
             $order->save();
 
-            return $order;
-        });
 
+        }catch(\Exception $e){
+            \DB::connection('webshaper-tenant')->rollback();
+            throw $e;
+        }
+
+        \DB::connection('webshaper-tenant')->commit();
+
+        return $order;
     }
 
     public function createNewOrderForGuest($total, $currency, $orderStatus, $paymentMethod, array $items,$customerId, $orderType,$calculatedDiscount = 0,$discountType = null,$ignoreStock = false,$jsonData = null,$remarks = null){
@@ -127,8 +136,15 @@ class OrderRepository extends BaseRepository{
     {
         //return items if is completed or processed
 
-        \DB::connection('webshaper-tenant')->transaction(function() use ($orderId,$username){
+        \DB::connection('webshaper-tenant')->beginTransaction();
+
+        try{
             $order = $this->getTransactionDetails($orderId);
+
+            if($order->txtOrderStatus == "cancelled")
+            {
+                throw new WSException(ErrorCode::ORDER_ALREADY_CANCELLED);
+            }
 
             //update the order to cancel status
             $prevStatus = $order->txtOrderStatus;
@@ -151,10 +167,19 @@ class OrderRepository extends BaseRepository{
             }
 
             $this->orderLogRepo->insertLog($orderId,$username,"Order cancelled. Status CANCELLED.");
-            
-            return true;
-            //record
-        });
+
+
+        }catch(\Exception $e)
+        {
+            \DB::connection('webshaper-tenant')->rollback();
+            throw $e;
+        }
+
+        \DB::connection('webshaper-tenant')->commit();
+
+        return $order;
+
+
         //deduct the customer point
     }
 }

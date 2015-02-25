@@ -34,12 +34,13 @@ class CoreServiceProvider extends ServiceProvider {
         $this->registerProductItemRepository();
         $this->registerProductRepository();
         $this->registerCustomerRepository();
+        $this->registerOrderLogRepository();
         $this->registerOrderItemRepository();
         $this->registerOrderRepository();
         $this->registerCategoryRepository();
         $this->registerWSHelper();
         $this->registerDBHelper();
-        $this->registerOrderLogRepository();
+
     }
 
     /**
@@ -111,7 +112,7 @@ class CoreServiceProvider extends ServiceProvider {
 
     public function registerOrderRepository(){
         $this->app['webshaper-orderRepo'] = $this->app->share(function($app){
-            return new OrderRepository($this->_getModel($app,'Order'),$this->app['webshaper-orderItemRepo'],$this->app['webshaper-productRepo']);
+            return new OrderRepository($this->_getModel($app,'Order'),$this->app['webshaper-orderItemRepo'],$this->app['webshaper-orderLogRepo'],$this->app['webshaper-productRepo']);
         });
 
         $this->registerAlias('OrderRepo');
@@ -134,7 +135,7 @@ class CoreServiceProvider extends ServiceProvider {
     }
 
     public function registerOrderLogRepository(){
-        $this->app['webshaper-orderItemRepo'] = $this->app->share(function($app){
+        $this->app['webshaper-orderLogRepo'] = $this->app->share(function($app){
             return new OrderLogRepository($this->_getModel($app,'OrderLog'));
         });
     }

@@ -1,7 +1,7 @@
 <?php namespace Webshaper\Core\Models;
 
-class OrderLog {
+class OrderLog extends BaseModel{
 
-    protected $table = "orderLog";
+    protected $table = "orderlog";
     protected $primaryKey = "intPKOrderLog";
 } 
