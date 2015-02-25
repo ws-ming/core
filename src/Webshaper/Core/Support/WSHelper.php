@@ -88,11 +88,13 @@ class WSHelper {
      * @return string the url of store without www prefix
      * */
     public function cleanDomain($url){
-        $pattern = '/\w+\..{2,3}(?:\..{2,3})?(?:$|(?=\/))/i';
+//        $pattern = '/\w+\..{2,3}(?:\..{2,3})?(?:$|(?=\/))/i';
+//
+//        if (preg_match($pattern, $url, $matches) === 1) {
+//            return $matches[0];
+//        }
 
-        if (preg_match($pattern, $url, $matches) === 1) {
-            return $matches[0];
-        }
+        return preg_replace('/^www\./i','',$url);
     }
 
     /**
