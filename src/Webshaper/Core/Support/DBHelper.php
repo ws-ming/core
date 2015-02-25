@@ -8,7 +8,7 @@ use Webshaper\Api\Models\ApiStoreDb;
 class DBHelper {
 
     private $LINUX_DB_HOST = '210.5.43.222';
-    private $SERVER_4_DB_HOST = 'localhost';
+    private $SERVER_4_DB_HOST = '183.81.160.79';
     private $DEBUG = TRUE;
 
     /**
