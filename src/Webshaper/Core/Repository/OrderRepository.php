@@ -99,6 +99,9 @@ class OrderRepository extends BaseRepository{
 
             $order->save();
 
+//            $this->orderLogRepo->insertLog($order->intPKOrder,$username,"Order cancelled. Status CANCELLED.");
+
+
 
         }catch(\Exception $e){
             \DB::connection('webshaper-tenant')->rollback();
@@ -181,5 +184,19 @@ class OrderRepository extends BaseRepository{
 
 
         //deduct the customer point
+    }
+
+    public function getOrderByTimeRange($from,$to)
+    {
+        $orders = $this->model->with('orderItems')->where('dtCreated','>=',$from)->where('dtCreated','<=',$to)->get();
+
+        return $orders;
+    }
+
+    public function getOrderByTimeRangeWithMethod($from,$to,$method)
+    {
+        $orders = $this->model->with('orderItems')->where('dtCreated','>=',$from)->where('dtCreated','<=',$to)->where('txtPaymentMethod','like',$method)->get();
+
+        return $orders;
     }
 }
