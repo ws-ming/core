@@ -28,7 +28,7 @@ class OrderItemRepository extends BaseRepository{
             $orderItems->intQty = $orderItem['quantity'];
             $orderItems->txtProductName = $item->txtProdName;
             $orderItems->txtSKU = $item->txtSKU;
-            $orderItems->taxrate = $orderItem['taxRate'];
+            $orderItems->taxrate = $orderItem['tax_rate'];
             $orderItems->save();
         }
 
