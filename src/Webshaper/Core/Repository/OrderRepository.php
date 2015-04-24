@@ -37,7 +37,7 @@ class OrderRepository extends BaseRepository{
         return $result;
     }
 
-    public function createNewOrder($total, $currency, $orderStatus, $paymentMethod,array $items, $customerId, $orderType,$calculatedDiscount = 0,$discountType = null,$ignoreStock = false,$jsonData = null,$remarks = null,$useCustAddr =  true, $shipAddrSameWithCust = true, $billAddrSameWithCust = true){
+    public function createNewOrder($total,$taxTotal,$taxableAmount,$taxMode, $currency, $orderStatus, $paymentMethod,array $items, $customerId, $orderType,$calculatedDiscount = 0,$discountType = null,$ignoreStock = false,$jsonData = null,$remarks = null,$useCustAddr =  true, $shipAddrSameWithCust = true, $billAddrSameWithCust = true){
         //order type 1=store 2=pos
         //check stock
         $stock = $this->productRepo->isStockSufficient($items);
@@ -62,6 +62,9 @@ class OrderRepository extends BaseRepository{
             $order->txtOrderStatus = $orderStatus;
             $order->txtPaymentMethod = $paymentMethod;
             $order->intOrderType = $orderType;
+            $order->taxableAmount = $taxableAmount;
+            $order->taxes = $taxTotal;
+            $order->taxPriceMode = $taxMode;
             $order->dtCreated = Carbon::now();
 
 //        if(!is_null($discountType)){ only for discount code
@@ -113,9 +116,9 @@ class OrderRepository extends BaseRepository{
         return $order;
     }
 
-    public function createNewOrderForGuest($total, $currency, $orderStatus, $paymentMethod, array $items,$customerId, $orderType,$calculatedDiscount = 0,$discountType = null,$ignoreStock = false,$jsonData = null,$remarks = null){
+    public function createNewOrderForGuest($total,$taxTotal,$taxableAmount,$taxMode, $currency, $orderStatus, $paymentMethod, array $items,$customerId, $orderType,$calculatedDiscount = 0,$discountType = null,$ignoreStock = false,$jsonData = null,$remarks = null){
 
-        return $this->createNewOrder($total,$currency,$orderStatus,$paymentMethod,$items,$customerId, $orderType, $calculatedDiscount,$discountType,$ignoreStock,$jsonData,$remarks);
+        return $this->createNewOrder($total,$taxTotal,$taxableAmount,$taxMode,$currency,$orderStatus,$paymentMethod,$items,$customerId, $orderType, $calculatedDiscount,$discountType,$ignoreStock,$jsonData,$remarks);
     }
 
     public function getTransactionOverview($method,$start = 0, $limit = 0,$column = array('dtCreated','fTotal','intPKOrder','txtOrderRef','txtOrderStatus','txtPaymentMethod'))
