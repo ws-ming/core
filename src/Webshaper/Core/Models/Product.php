@@ -16,6 +16,7 @@ class Product extends BaseModel {
             'txtProdItemShortDesc',
             'txtPicSmallURL',
             'intPKCategory',
+            'intPKCategoryMultiple'
         );
         return $this->productItem()->select($columns);
     }
