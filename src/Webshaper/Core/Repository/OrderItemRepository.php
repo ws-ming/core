@@ -22,7 +22,7 @@ class OrderItemRepository extends BaseRepository{
             $orderItems = new OrderItem();
             $item = \ProductRepo::get($orderItem['product_id']);
             $orderItems->intPKOrder = $orderId;
-            $orderItems->fUnitPrice = $item->fPrice;
+            $orderItems->fUnitPrice = $orderItem['price'];
             $orderItems->intPKParent = $item->intPKParent;
             $orderItems->intPKProduct = $item->intPKProduct;
             $orderItems->intQty = $orderItem['quantity'];
