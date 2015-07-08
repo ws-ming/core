@@ -57,6 +57,7 @@ class ProductRepository extends BaseRepository{
         foreach($orderItems as $orderItem)
         {
             $item =  $this->model->find($orderItem['product_id']);
+
             if($item->intStockQty < $orderItem['quantity'])
             {
                 $stock[] = array(

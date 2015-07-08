@@ -9,6 +9,7 @@ class DBHelper {
 
     private $LINUX_DB_HOST = '210.5.43.222';
     private $SERVER_4_DB_HOST = '183.81.160.79';
+    private $SERVER_3_DB_HOST = '14.102.146.152';
     private $DEBUG = TRUE;
 
     /**
@@ -111,8 +112,14 @@ class DBHelper {
         foreach($columns as $col){
             if(empty($clientWebsite->$col)) return null;
         }
+
         //check if the store is server 4
-        if($this->isLinuxDBServer($clientWebsite->serverid)){
+        if($this->isServer3($clientWebsite->serverid))
+        {
+            $websiteDB = DBMapping::find($clientWebsite->mapid,array('dbname','dbuser','dbpw'));
+            $websiteDB->dbhost = $this->SERVER_3_DB_HOST;
+        }
+        else if($this->isLinuxDBServer($clientWebsite->serverid)){
             $websiteDB = DBMapping::find($clientWebsite->mapid,array('dbname','dbuser','dbpw'));
             $websiteDB->dbhost = $this->LINUX_DB_HOST;
         }else{
@@ -181,6 +188,14 @@ class DBHelper {
         return true;
     }
 
+    private function isServer3($serverID)
+    {
+        if($serverID == 6) { //6 = server 3 server id
+            return true;
+        }
+
+        return false;
+    }
     /**
      * does the db info has been stored in "caching" table?
      * @param $storeUrl
